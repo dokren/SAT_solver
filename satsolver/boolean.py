@@ -74,6 +74,7 @@ class Literal(Formula):
         A literal is already maximally simplified, so it is returned unchanged.
         """
         return self
+        
 
 class Not(Formula):
     """
@@ -224,6 +225,16 @@ class Multi(Formula):
             return lst[0]
         return this(lst)
 
+    def removeClause(self, cl):
+        s = self.lst.difference(set([cl]))
+        this = self.getClass()
+        return this(s)
+
+    def addClause(self, cl):
+        s = self.lst.union(set([cl]))
+        this = self.getClass()
+        return this(s)
+
 class And(Multi):
     """
     The class for conjunctions.
@@ -245,6 +256,7 @@ class And(Multi):
         """
         return Or
 
+
 class Or(Multi):
     """
     The class for disjunctions.
@@ -265,6 +277,7 @@ class Or(Multi):
         Return the dual class of the instance.
         """
         return And
+
 
 class Binary(Formula):
     """
