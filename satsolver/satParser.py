@@ -29,3 +29,17 @@ def removeEmpty(x):
     if x == '':
         return False
     return True
+
+def writeOutput(file, literals, satisfiable):
+    file = open(file, 'w')
+    if not satisfiable:
+        file.write('NOT SATISFIABLE!')
+    else:
+        for (k, v) in literals.items():
+            if v:
+                file.write(str(k) + ' ')
+            else:
+                file.write('-' + str(k) + ' ')
+
+    file.close()
+

@@ -2,8 +2,8 @@ from satParser import *
 from copy import deepcopy
 
 
-def solve(file):
-    (formula, literals) = parseInput(file)
+def solve(inputFile, outputFile):
+    (formula, literals) = parseInput(inputFile)
     print('FORMULA: ' + str(formula))
     print('LITERALS: ' + str(literals))
 
@@ -11,6 +11,8 @@ def solve(file):
 
     print('IS SATISFIABLE: ' + str(satisfiable))
     print('END SOLUTION: ' + str(solution))
+
+    writeOutput(outputFile, solution, satisfiable)
 
 
 def dpll(formula, literals):
@@ -59,4 +61,4 @@ def clearUnits(formula, literals):
         i += 1
 
 
-solve('dimacs/sudoku2.txt')
+solve('dimacs/sudoku2.txt', 'temp/sudoku2_lol_izi.txt')
