@@ -40,17 +40,12 @@ def dpll(formula, literals):
             literals[clause.term.lit] = False
             formula = formula.removeClause(clause)
     
-    if formula == T:
-        return literals
-    if formula == F:
-        return None
-    
     for (k,v) in literals.items():
         if v == None:
-            newLiterals = dpll(formula.addClause(Literal(k)), literals)
+            newLiterals = dpll(formula.addClause(Literal(k)), dict(literals))
             if not newLiterals is None:
                 return newLiterals
             else:
-                return dpll(formula.addClause(Not(Literal(k))), literals)
+                return dpll(formula.addClause(Not(Literal(k))), dict(literals))
     
 solve('dimacs/test.txt')
