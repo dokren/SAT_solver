@@ -39,6 +39,12 @@ def dpll(formula, literals):
         if isinstance(clause, Not):
             literals[clause.term.lit] = False
             formula = formula.removeClause(clause)
+
+    if formula == T:
+        return literals
+    if formula == F:
+        return None
+    
     
     for (k,v) in literals.items():
         if v == None:
