@@ -1,5 +1,6 @@
 from satParserOpt import *
 from copy import deepcopy
+import sys
 
 
 def solve(inputFile, outputFile):
@@ -30,13 +31,13 @@ def dpll(formula, literals, occurrences):
     newLiterals = array('i', literals)
     newFormula = deepcopy(formula)
     newFormula.append(array('i', [maxOccurLiteral]))
-    (solution, satisfiable) = dpll(newFormula, newLiterals)
+    (solution, satisfiable) = dpll(newFormula, newLiterals, occurrences)
     if satisfiable:
         return solution, satisfiable
     newLiterals = literals.index(max(literals))
     newFormula = deepcopy(formula)
     newFormula.append(array('i', [-maxOccurLiteral]))
-    return dpll(newFormula, newLiterals)
+    return dpll(newFormula, newLiterals, occurrences)
 
 
 def clearUnits(formula, literals):
@@ -63,5 +64,4 @@ def clearUnits(formula, literals):
             continue
         i += 1
 
-
-solve('dimacs/sudoku2.txt', 'temp/sudoku2_lol_izi.txt')
+solve('dimacs/test_case_not_satisfiable.cnf', 'temp/bf0432-007_lol_izi.cnf')

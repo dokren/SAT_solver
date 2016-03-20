@@ -61,4 +61,4 @@ def clearUnits(formula, literals):
         i += 1
 
 
-solve('dimacs/sudoku2.txt', 'temp/sudoku2_lol_izi.txt')
+solve('dimacs/test_case_satisfiable.cnf', 'temp/bf0432-007_lol_izi.cnf')
