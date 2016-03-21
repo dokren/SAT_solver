@@ -74,7 +74,7 @@ def clearUnits(formula, literals):
                 literals[abs(clause[0]) - 1] = 1 if clause[0] > 0 else -1
                 units.append(clause[0])
 
-        negativeUnits = map(lambda x: x * -1, units)
+        negativeUnits = list(map(lambda x: x * -1, units))
 
         newFormula = list()
         for clause in formula:
