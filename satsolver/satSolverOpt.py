@@ -18,10 +18,13 @@ def removePureLiterals(formula, literals, occurrences, purity):
         pure = purity[i]
         if occurrences[i] == abs(pure):
             literals[i] = int(pure/abs(pure))
-            formula.append(list([literals[i]]))
+            occurrences[i] += 1
+            formula.append(list([i+1]))
 
 def dpll(formula, literals, occurrences):
-    (formula, literals) = clearUnits(formula, literals)
+
+    (formula, literals, occurrences) = clearUnits(formula, literals, occurrences)
+
     if not formula:
         return literals, True
     elif [] in formula:
@@ -29,19 +32,20 @@ def dpll(formula, literals, occurrences):
 
     level = 0
     levels = dict()
-    i = literals.index(0)
-    levels[level] = list([formula, literals, i+1])
+    i = occurrences.index(max(occurrences))
+
+    levels[level] = list([formula, literals, i+1, occurrences])
     while True:
-        (cFormula, cLiterals, cLit) = levels[level]
+        (cFormula, cLiterals, cLit, cOcc) = levels[level]
 
         newLiterals = list(cLiterals)
         newFormula = deepcopy(cFormula)
         print(newLiterals)
+        newOcc = list(cOcc)
 
         newFormula.append([cLit])
 
-        (newFormula, newLiterals) = clearUnits(newFormula, newLiterals)
-
+        (newFormula, newLiterals, newOcc) = clearUnits(newFormula, newLiterals, newOcc)
 
         if not newFormula:
             return newLiterals, True
@@ -58,11 +62,11 @@ def dpll(formula, literals, occurrences):
                     levels[level][2] = -levels[level][2]
         else:
             level += 1
-            i = newLiterals.index(0)
-            levels[level] = list([newFormula, newLiterals, i+1])
+            i = newOcc.index(max(newOcc))
+            levels[level] = list([newFormula, newLiterals, i+1, newOcc])
 
 
-def clearUnits(formula, literals):
+def clearUnits(formula, literals, occurrences):
 
     loop = True
     while loop:
@@ -77,6 +81,7 @@ def clearUnits(formula, literals):
         negativeUnits = list(map(lambda x: x * -1, units))
 
         newFormula = list()
+        newOcc = array('i', (0,)*len(occurrences))
         for clause in formula:
             if len(clause) == 1 and clause[0] in units:
                 continue
@@ -89,11 +94,14 @@ def clearUnits(formula, literals):
                     continue
                 newClause.append(lit)
             if add:
+                for i in newClause:
+                    newOcc[abs(i) - 1] += 1
                 newFormula.append(newClause)
 
         formula = newFormula
-    return (formula, literals)
+        occurrences = newOcc
+    return (formula, literals, occurrences)
 
 
 # solve('dimacs/test2.txt', 'temp/test2_sol.txt')
-solve('dimacs/test_case_not_satisfiable.cnf', 'temp/test_case_satisfiable_sol.cnf')
+solve('dimacs/test_case_not_satisfiable.cnf', 'temp/test_case_not_satisfiable.cnf_sol.cnf')
