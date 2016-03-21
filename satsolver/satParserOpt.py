@@ -24,7 +24,7 @@ def parseInput(file):
             try:
                 if nbclauses == 0 or not line.endswith('0'):
                     raise Exception('File is not in dimacs format!')
-                clause = array('i', map(int, filter(removeEmpty, line.split()[:-1])))
+                clause = list(map(int, filter(removeEmpty, line.split()[:-1])))
                 for i in clause:
                     occurrences[abs(i)-1] += 1
                     purity[abs(i)-1] += int(i/abs(i))
@@ -41,6 +41,7 @@ def removeEmpty(x):
     if x == '':
         return False
     return True
+
 
 def writeOutput(file, literals, satisfiable):
     file = open(file, 'w')

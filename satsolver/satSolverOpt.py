@@ -18,13 +18,13 @@ def removePureLiterals(formula, literals, occurrences, purity):
         pure = purity[i]
         if occurrences[i] == abs(pure):
             literals[i] = int(pure/abs(pure))
-            formula.append(array('i', [literals[i] * i]))
+            formula.append(list([literals[i]]))
 
 def dpll(formula, literals, occurrences):
-    clearUnits(formula, literals)
+    (formula, literals) = clearUnits(formula, literals)
     if not formula:
         return literals, True
-    elif array('i') in formula:
+    elif [] in formula:
         return literals, False
 
     level = 0
@@ -32,29 +32,25 @@ def dpll(formula, literals, occurrences):
     i = literals.index(0)
     levels[level] = list([formula, literals, i+1])
     while True:
-        print('LEVEL ' + str(level))
-        print ('[', end="")
-        for (k, v) in levels.items():
-            print(str(v[2]) + ",", end="")
-        print (']')
         (cFormula, cLiterals, cLit) = levels[level]
-        
-        newLiterals = array('i', cLiterals)
+
+        newLiterals = list(cLiterals)
         newFormula = deepcopy(cFormula)
-        if cLit > 0:
-            newFormula.append(array('i', [cLit]))
-        else:
-            newFormula.append(array('i', [-cLit]))
-            
-        clearUnits(newFormula, newLiterals)
+        print(newLiterals)
+
+        newFormula.append([cLit])
+
+        (newFormula, newLiterals) = clearUnits(newFormula, newLiterals)
+
+
         if not newFormula:
-            return literals, True
-        elif array('i') in newFormula:
+            return newLiterals, True
+        elif [] in newFormula:
             if cLit > 0:
-                levels[level] = list([cFormula, cLiterals, -cLit])
+                levels[level][2] = -cLit
             else:
                 if level == 0:
-                    return literals, False
+                    return newLiterals, False
                 else:
                     level -= 1
                     while levels[level][2] < 0:
@@ -67,27 +63,37 @@ def dpll(formula, literals, occurrences):
 
 
 def clearUnits(formula, literals):
-    i = 0
-    while i < len(formula):
-        clause = formula[i]
-        if len(clause) == 1:
-            literals[abs(clause[0]) - 1] = 1 if clause[0] > 0 else -1
-            j = 0
-            while j < len(formula):
-                next = False
-                tempClause = formula[j]
-                if set(tempClause) == set(clause):
-                    formula.remove(tempClause)
-                    next = True
-                elif clause[0] in tempClause:
-                    formula.remove(tempClause)
-                    next = True
-                elif -clause[0] in tempClause:
-                    tempClause.remove(-clause[0])
-                    next = True
-                j = j if next else j + 1
-            i = 0
-            continue
-        i += 1
 
-solve('dimacs/sudoku2.txt', 'temp/test2_sol.txt')
+    loop = True
+    while loop:
+        loop = False
+        units = list()
+        for clause in formula:
+            if len(clause) == 1 and not -clause[0] in units:
+                loop = True
+                literals[abs(clause[0]) - 1] = 1 if clause[0] > 0 else -1
+                units.append(clause[0])
+
+        negativeUnits = map(lambda x: x * -1, units)
+
+        newFormula = list()
+        for clause in formula:
+            if len(clause) == 1 and clause[0] in units:
+                continue
+            newClause = list()
+            add = True
+            for lit in clause:
+                if lit in units:
+                    add = False
+                if lit in negativeUnits:
+                    continue
+                newClause.append(lit)
+            if add:
+                newFormula.append(newClause)
+
+        formula = newFormula
+    return (formula, literals)
+
+
+# solve('dimacs/test2.txt', 'temp/test2_sol.txt')
+solve('dimacs/test_case_not_satisfiable.cnf', 'temp/test_case_satisfiable_sol.cnf')
