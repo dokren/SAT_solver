@@ -40,7 +40,6 @@ def dpll(formula, literals, occurrences):
 
         newLiterals = list(cLiterals)
         newFormula = deepcopy(cFormula)
-        print(newLiterals)
         newOcc = list(cOcc)
 
         newFormula.append([cLit])
@@ -58,6 +57,8 @@ def dpll(formula, literals, occurrences):
                 else:
                     level -= 1
                     while levels[level][2] < 0:
+                        if level == 0:
+                            return newLiterals, False
                         level -= 1
                     levels[level][2] = -levels[level][2]
         else:
