@@ -6,10 +6,9 @@ import sys
 def solve(inputFile):
     ## parsing input string and generating output file name
     split = inputFile.split('.')
-    inputFile = 'cases/' + inputFile
     extension = split[len(split)-1]
     file = '.'.join(split[:-1])
-    outputFile = 'cases/' + file + '_sol.' + extension
+    outputFile = file + '_sol.' + extension
     
     print('Parsing input file...')
     (formula, literals, occurrences, purity) = parseInput(inputFile)
@@ -111,4 +110,15 @@ def clearUnits(formula, literals, occurrences):
     return (formula, literals, occurrences)
 
 
-##solve('test_case.txt')
+
+
+def main():
+    if len(sys.argv) < 2:
+        print('Please specify exactly one argument - name of file containing SAT problem in dimacs format.')
+        return
+    if len(sys.argv) > 2:
+        print('This program accepts only one argument - name of file containing SAT problem in dimacs format.')
+        return
+    solve(sys.argv[1])
+if __name__ == '__main__':
+    main()
