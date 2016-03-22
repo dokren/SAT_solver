@@ -2,6 +2,8 @@
 A short program that solves the SAT problem using the DPLL algorithm.
 
 ## Contents
+There are two implementations of SAT-solvers. The first, named satSolver.py with satParser.py, is the simple implementation of DPLL, while the second, consisting of satSolver.py and satParserOpt.py, involves additional improvements.
+
 In subfolder *cases* there are several examples for solving the SAT problem. Two of which solve sudoku for 4×4 and 9×9 instances. Other than these test cases, file in dimacs format is a valid input. It is assumed however, that line starting with "p" comes before all the clauses and that each clause is in it's own line, ending with 0.
 
 ## Running the program
