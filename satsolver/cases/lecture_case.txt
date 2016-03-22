@@ -1,4 +1,4 @@
-c  quinn.cnf
+c  Case from lectures
 c
 p cnf 3 4
 1 2 0

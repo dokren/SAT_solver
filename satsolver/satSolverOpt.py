@@ -3,7 +3,14 @@ from copy import deepcopy
 import sys
 
 
-def solve(inputFile, outputFile):
+def solve(inputFile):
+    ## parsing input string and generating output file name
+    split = inputFile.split('.')
+    inputFile = 'cases/' + inputFile
+    extension = split[len(split)-1]
+    file = '.'.join(split[:-1])
+    outputFile = 'cases/' + file + '_sol.' + extension
+    
     print('Parsing input file...')
     (formula, literals, occurrences, purity) = parseInput(inputFile)
     print('Removing pure literals...')
@@ -104,5 +111,4 @@ def clearUnits(formula, literals, occurrences):
     return (formula, literals, occurrences)
 
 
-# solve('dimacs/test2.txt', 'temp/test2_sol.txt')
-solve('dimacs/test_case_not_satisfiable.cnf', 'temp/test_case_not_satisfiable.cnf_sol.cnf')
+##solve('test_case.txt')
