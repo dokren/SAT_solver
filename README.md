@@ -9,7 +9,7 @@ The program is ran by executing the program in this way:
 ```
 python satSolverOpt.py [fileName]
 ```
-where fileName is actually path to the file containing valid SAT problem in dimacs format. To access test cases, full command should be
+where fileName is actually path to the file containing valid SAT problem in dimacs format. To access test cases, full command should be e.g.
 ```
 python satSolverOpt.py cases/sudoku1.txt
 ```
